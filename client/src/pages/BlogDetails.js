@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,7 +9,7 @@ const BlogDetails = () => {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({});
   // get blog details
-  const getBlogDetail = async () => {
+  const getBlogDetail = useCallback(async () => {
     try {
       const { data } = await axios.get(`/api/v1/blog/get-blog/${id}`);
       if (data?.success) {
@@ -23,11 +23,11 @@ const BlogDetails = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     getBlogDetail();
-  }, [id]);
+  }, [getBlogDetail]);
 
   // input change
   const handleChange = (e) => {
